@@ -4,8 +4,8 @@ namespace JN_WEB.Models
 {
     public interface IUsuarioModel
     {
-        void RegistrarUsuario(Usuario ent);
+        Respuesta RegistrarUsuario(Usuario ent);
 
-        void IniciarSesion(Usuario ent);
+        Respuesta IniciarSesion(Usuario ent);
     }
 }

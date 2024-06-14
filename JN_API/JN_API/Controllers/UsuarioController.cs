@@ -1,8 +1,8 @@
 ﻿using Dapper;
 using JN_API.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace JN_API.Controllers
 {
@@ -18,7 +18,7 @@ namespace JN_API.Controllers
 
             using (var context = new SqlConnection("Server=EDUARDO;Database=JUEVES_BD;Trusted_Connection=True;TrustServerCertificate=True;"))
             {
-                var result = await context.ExecuteAsync("RegistrarUsuario", new { ent.Identificacion, ent.Nombre, ent.Correo, ent.Contrasenna }, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await context.ExecuteAsync("RegistrarUsuario", new { ent.Identificacion, ent.Nombre, ent.Correo, ent.Contrasenna }, commandType: CommandType.StoredProcedure);
 
                 if (result > 0)
                 {
@@ -45,7 +45,7 @@ namespace JN_API.Controllers
 
             using (var context = new SqlConnection("Server=EDUARDO;Database=JUEVES_BD;Trusted_Connection=True;TrustServerCertificate=True;"))
             {
-                var result = await context.QueryAsync<Usuario>("IniciarSesion", new { ent.Correo, ent.Contrasenna }, commandType: System.Data.CommandType.StoredProcedure);
+                var result = await context.QueryAsync<Usuario>("IniciarSesion", new { ent.Correo, ent.Contrasenna }, commandType: CommandType.StoredProcedure);
 
                 if (result.Count() > 0)
                 {
