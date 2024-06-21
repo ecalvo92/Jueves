@@ -26,12 +26,30 @@ namespace JN_WEB.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult RegistrarUsuario()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RegistrarUsuario(Usuario ent)
+        {
+            var resp = iUsuarioModel.RegistrarUsuario(ent);
+
+            if (resp.Codigo == 1)
+                return RedirectToAction("Index", "Home");
+
+            ViewBag.msj = resp.Mensaje;
+            return View();
+        }
+
 
         [HttpGet]
         public IActionResult Home()
         {
             return View();
-        }
+        }        
 
     }
 }

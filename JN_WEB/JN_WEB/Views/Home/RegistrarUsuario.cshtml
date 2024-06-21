@@ -1,0 +1,72 @@
+﻿@model JN_WEB.Entities.Usuario
+
+@{
+    ViewData["Title"] = "Registro Usuario";
+    Layout = "~/Views/Shared/_LayoutExterno.cshtml";
+}
+
+<div class="register-box">
+    <div class="card">
+        <div class="card-body register-card-body">
+            <p class="login-box-msg">Registro de Usuarios</p>
+            
+            @if (ViewBag.msj != null)
+            {
+                <div class="alert alert-secondary" style="text-align:center" role="alert">
+                    @ViewBag.msj
+                </div>
+            }
+
+            @using (Html.BeginForm("RegistrarUsuario", "Home"))
+            {
+                <div class="input-group mb-3">
+                    @Html.TextBoxFor(m => m.Identificacion, new { @type = "text", @class = "form-control", @placeholder = "Identificación" })
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.TextBoxFor(m => m.Nombre, new { @type = "text", @class = "form-control", @placeholder = "Nombre" })
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.TextBoxFor(m => m.Correo, new { @type = "email", @class = "form-control", @placeholder = "Correo Electrónico" })
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    @Html.TextBoxFor(m => m.Contrasenna, new { @type = "password", @class = "form-control", @placeholder = "Contraseña" })
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">Procesar</button>
+                    </div>
+                </div>
+            }
+
+            <p class="mb-1">
+                <a href="">No recuerdo mi contraseña</a>
+            </p>
+            <p class="mb-0">
+                <a href="" class="text-center">Quiero iniciar sesión</a>
+            </p>
+        </div>
+    </div>
+</div>
