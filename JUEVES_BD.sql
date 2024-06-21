@@ -43,11 +43,7 @@ GO
 
 SET IDENTITY_INSERT [dbo].[tUsuario] ON 
 GO
-INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (1, N'304590415', N'Eduardo', N'ecalvo90415@ufide.ac.cr', N'90415', 1, 1)
-GO
-INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (2, N'118370494', N'Andrés Canul Bolaños', N'acanul70494@ufide.ac.cr', N'70494', 1, 1)
-GO
-INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (3, N'206900400', N'Jorge Hernández Araya', N'jhernadez00400@ufide.ac.cr', N'00400', 1, 1)
+INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (1, N'304590415', N'Eduardo Calvo Castillo', N'ecalvo90415@ufide.ac.cr', N'cSKGG1tdQNeyv7wJWXXCiw==', 1, 1)
 GO
 SET IDENTITY_INSERT [dbo].[tUsuario] OFF
 GO

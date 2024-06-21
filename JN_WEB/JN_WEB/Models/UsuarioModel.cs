@@ -2,13 +2,13 @@
 
 namespace JN_WEB.Models
 {
-    public class UsuarioModel (HttpClient httpClient) : IUsuarioModel
+    public class UsuarioModel (HttpClient httpClient, IConfiguration iConfiguration) : IUsuarioModel
     {
         public Respuesta RegistrarUsuario(Usuario ent)
         {
             using (httpClient)
             {
-                string url = "https://localhost:7009/api/Usuario/RegistrarUsuario";
+                string url = iConfiguration.GetSection("Llaves:UrlApi").Value + "Usuario/RegistrarUsuario";
                 JsonContent body = JsonContent.Create(ent);
                 var resp = httpClient.PostAsync(url, body).Result;
 
@@ -23,7 +23,7 @@ namespace JN_WEB.Models
         {
             using (httpClient)
             {
-                string url = "https://localhost:7009/api/Usuario/IniciarSesion";
+                string url = iConfiguration.GetSection("Llaves:UrlApi").Value + "Usuario/IniciarSesion";
                 JsonContent body = JsonContent.Create(ent);
                 var resp = httpClient.PostAsync(url, body).Result;
 

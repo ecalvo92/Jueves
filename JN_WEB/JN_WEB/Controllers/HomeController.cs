@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace JN_WEB.Controllers
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public class HomeController(IUsuarioModel iUsuarioModel) : Controller
+    public class HomeController(IUsuarioModel iUsuarioModel, IComunModel iComunModel) : Controller
     {
         [HttpGet]
         public IActionResult Index()
@@ -16,6 +16,7 @@ namespace JN_WEB.Controllers
         [HttpPost]
         public IActionResult Index(Usuario ent)
         {
+            ent.Contrasenna = iComunModel.Encrypt(ent.Contrasenna!);
             var resp = iUsuarioModel.IniciarSesion(ent);
 
             if (resp.Codigo == 1)
@@ -35,6 +36,7 @@ namespace JN_WEB.Controllers
         [HttpPost]
         public IActionResult RegistrarUsuario(Usuario ent)
         {
+            ent.Contrasenna = iComunModel.Encrypt(ent.Contrasenna!);
             var resp = iUsuarioModel.RegistrarUsuario(ent);
 
             if (resp.Codigo == 1)

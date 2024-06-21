@@ -6,6 +6,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IUsuarioModel, UsuarioModel>();
+builder.Services.AddScoped<IComunModel, ComunModel>();
 
 var app = builder.Build();
 
