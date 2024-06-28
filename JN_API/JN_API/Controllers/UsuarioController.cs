@@ -73,6 +73,34 @@ namespace JN_API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("ConsultarUsuarios")]
+        public async Task<IActionResult> ConsultarUsuarios()
+        {
+            Respuesta resp = new Respuesta();
+
+            using (var context = new SqlConnection(iConfiguration.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var result = await context.QueryAsync<Usuario>("ConsultarUsuarios", new {  }, commandType: CommandType.StoredProcedure);
+
+                if (result.Count() > 0)
+                {
+                    resp.Codigo = 1;
+                    resp.Mensaje = "OK";
+                    resp.Contenido = result;
+                    return Ok(resp);
+                }
+                else
+                {
+                    resp.Codigo = 0;
+                    resp.Mensaje = "No hay usuarios registrados en este momento";
+                    resp.Contenido = false;
+                    return Ok(resp);
+                }
+            }
+        }
+
         private string GenerarToken(int Consecutivo)
         {
             string SecretKey = iConfiguration.GetSection("Llaves:SecretKey").Value!;

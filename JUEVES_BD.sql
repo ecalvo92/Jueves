@@ -45,6 +45,8 @@ SET IDENTITY_INSERT [dbo].[tUsuario] ON
 GO
 INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (1, N'304590415', N'Eduardo Calvo Castillo', N'ecalvo90415@ufide.ac.cr', N'cSKGG1tdQNeyv7wJWXXCiw==', 1, 1)
 GO
+INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (2, N'305070199', N'Tifanny Camacho Monge', N'tcamacho70199@ufide.ac.cr', N'cSKGG1tdQNeyv7wJWXXCiw==', 1, 1)
+GO
 SET IDENTITY_INSERT [dbo].[tUsuario] OFF
 GO
 
@@ -64,6 +66,19 @@ ALTER TABLE [dbo].[tUsuario]  WITH CHECK ADD  CONSTRAINT [FK_tUsuario_tRol] FORE
 REFERENCES [dbo].[tRol] ([IdRol])
 GO
 ALTER TABLE [dbo].[tUsuario] CHECK CONSTRAINT [FK_tUsuario_tRol]
+GO
+
+CREATE PROCEDURE [dbo].[ConsultarUsuarios]
+	
+AS
+BEGIN
+
+	SELECT	Consecutivo,Identificacion,Nombre,Correo,U.IdRol,
+	CASE WHEN Estado = 1 THEN 'Activo' ELSE 'Inactivo' END 'Estado',R.Descripcion
+	FROM	dbo.tUsuario U
+	INNER JOIN dbo.tRol  R ON U.IdRol = R.IdRol
+
+END
 GO
 
 CREATE PROCEDURE [dbo].[IniciarSesion]

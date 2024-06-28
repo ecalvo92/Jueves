@@ -1,0 +1,33 @@
+﻿@model List<JN_WEB.Entities.Usuario>
+
+@{
+    ViewData["Title"] = "Principal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table id="tabla-Usuarios" class="table table-hover">
+    <thead>
+        <tr>
+            <th>Identificación</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Identificacion</td>
+                <td>@item.Nombre</td>                
+                <td>@item.Correo</td>
+                <td>@item.Descripcion</td>
+                <td>@item.Estado</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="~/page/jquery/jquery.min.js"></script>
+<script src="~/js/ConsultaUsuarios.js"></script>
