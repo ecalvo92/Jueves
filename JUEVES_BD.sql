@@ -43,9 +43,9 @@ GO
 
 SET IDENTITY_INSERT [dbo].[tUsuario] ON 
 GO
-INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (1, N'304590415', N'Eduardo Calvo Castillo', N'ecalvo90415@ufide.ac.cr', N'cSKGG1tdQNeyv7wJWXXCiw==', 1, 1)
+INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (1, N'304590415', N'local Eduardo Calvo Castillo', N'ecalvo90415@ufide.ac.cr', N'cSKGG1tdQNeyv7wJWXXCiw==', 1, 1)
 GO
-INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (2, N'305070199', N'Tifanny Camacho Monge', N'tcamacho70199@ufide.ac.cr', N'cSKGG1tdQNeyv7wJWXXCiw==', 1, 1)
+INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (2, N'305070199', N'local Tifanny Camacho Monge', N'tcamacho70199@ufide.ac.cr', N'cSKGG1tdQNeyv7wJWXXCiw==', 1, 1)
 GO
 SET IDENTITY_INSERT [dbo].[tUsuario] OFF
 GO

@@ -56,7 +56,7 @@ namespace JN_API.Controllers
 
                 if (result != null)
                 {
-                    result.Token = GenerarToken(result.Consecutivo);
+                    result.Token = GenerarToken(result.Consecutivo, result.IdRol);
 
                     resp.Codigo = 1;
                     resp.Mensaje = "OK";
@@ -101,11 +101,12 @@ namespace JN_API.Controllers
             }
         }
 
-        private string GenerarToken(int Consecutivo)
+        private string GenerarToken(int Consecutivo, int IdRol)
         {
             string SecretKey = iConfiguration.GetSection("Llaves:SecretKey").Value!;
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, Consecutivo.ToString()));
+            claims.Add(new Claim(ClaimTypes.Role, IdRol.ToString()));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);

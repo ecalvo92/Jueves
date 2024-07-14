@@ -55,6 +55,7 @@ namespace JN_WEB.Controllers
 
 
 
+        [FiltroSesiones]
         [HttpGet]
         public IActionResult Home()
         {
@@ -62,6 +63,7 @@ namespace JN_WEB.Controllers
         }
 
 
+        [FiltroSesiones]
         [HttpGet]
         public IActionResult Salir()
         {
@@ -70,6 +72,7 @@ namespace JN_WEB.Controllers
         }
 
 
+        [FiltroSesiones]
         [HttpGet]
         public IActionResult ConsultarUsuarios()
         {

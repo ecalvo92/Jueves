@@ -19,8 +19,8 @@ namespace JN_API.Controllers
 
 
             return Problem(
-                detail : "",
-                title : "");
+                detail : context!.Path,
+                title : context.Error.Message);
         }
     }
 }
