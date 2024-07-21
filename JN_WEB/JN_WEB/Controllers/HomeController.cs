@@ -1,12 +1,13 @@
 using JN_WEB.Entities;
 using JN_WEB.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
 
 namespace JN_WEB.Controllers
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public class HomeController(IUsuarioModel iUsuarioModel, IComunModel iComunModel) : Controller
+    public class HomeController(IUsuarioModel iUsuarioModel, IComunModel iComunModel, IRolModel iRolModel) : Controller
     {
         [HttpGet]
         public IActionResult Index()
@@ -25,6 +26,8 @@ namespace JN_WEB.Controllers
                 var datos = JsonSerializer.Deserialize<Usuario>((JsonElement)resp.Contenido!);
                 HttpContext.Session.SetString("TOKEN", datos!.Token!);
                 HttpContext.Session.SetString("NOMBRE", datos!.Nombre!);
+                HttpContext.Session.SetString("ROL", datos!.IdRol.ToString());
+                HttpContext.Session.SetInt32("CONSECUTIVO", datos!.Consecutivo);
                 return RedirectToAction("Home", "Home");
             }
 
@@ -63,6 +66,7 @@ namespace JN_WEB.Controllers
         }
 
 
+
         [FiltroSesiones]
         [HttpGet]
         public IActionResult Salir()
@@ -70,6 +74,7 @@ namespace JN_WEB.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
+
 
 
         [FiltroSesiones]
@@ -81,12 +86,38 @@ namespace JN_WEB.Controllers
             if (resp.Codigo == 1)
             { 
                 var datos = JsonSerializer.Deserialize<List<Usuario>>((JsonElement)resp.Contenido!);
-                return View(datos);
+                return View(datos!.Where(x => x.Consecutivo != HttpContext.Session.GetInt32("CONSECUTIVO")).ToList());
             }
 
             return View(new List<Usuario>());
         }
 
+
+
+        [FiltroSesiones]
+        [HttpGet]
+        public IActionResult ActualizarUsuario(int q)
+        {
+            var roles = iRolModel.ConsultarRoles();
+            ViewBag.Roles = JsonSerializer.Deserialize<List<SelectListItem>>((JsonElement)roles.Contenido!);
+
+            var resp = iUsuarioModel.ConsultarUsuario(q);
+
+            if (resp.Codigo == 1)
+            {
+                var datos = JsonSerializer.Deserialize<Usuario>((JsonElement)resp.Contenido!);
+                return View(datos);
+            }
+
+            return View(new Usuario());
+        }
+
+        [FiltroSesiones]
+        [HttpPost]
+        public IActionResult ActualizarUsuario(Usuario ent)
+        {
+            return View();
+        }
 
     }
 }

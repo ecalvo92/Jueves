@@ -52,7 +52,7 @@ namespace JN_API.Controllers
 
             using (var context = new SqlConnection(iConfiguration.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
-                var result = await context.QueryFirstAsync<Usuario>("IniciarSesion", new { ent.Correo, ent.Contrasenna }, commandType: CommandType.StoredProcedure);
+                var result = await context.QueryFirstOrDefaultAsync<Usuario>("IniciarSesion", new { ent.Correo, ent.Contrasenna }, commandType: CommandType.StoredProcedure);
 
                 if (result != null)
                 {
@@ -78,6 +78,9 @@ namespace JN_API.Controllers
         [Route("ConsultarUsuarios")]
         public async Task<IActionResult> ConsultarUsuarios()
         {
+            if (!EsAdministrador())
+                return StatusCode(403);
+
             Respuesta resp = new Respuesta();
 
             using (var context = new SqlConnection(iConfiguration.GetSection("ConnectionStrings:DefaultConnection").Value))
@@ -101,12 +104,45 @@ namespace JN_API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("ConsultarUsuario")]
+        public async Task<IActionResult> ConsultarUsuario(int Consecutivo)
+        {
+            if (!EsAdministrador())
+                return StatusCode(403);
+
+            Respuesta resp = new Respuesta();
+
+            using (var context = new SqlConnection(iConfiguration.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var result = await context.QueryFirstOrDefaultAsync<Usuario>("ConsultarUsuario", new { Consecutivo }, commandType: CommandType.StoredProcedure);
+
+                if (result != null)
+                {
+                    resp.Codigo = 1;
+                    resp.Mensaje = "OK";
+                    resp.Contenido = result;
+                    return Ok(resp);
+                }
+                else
+                {
+                    resp.Codigo = 0;
+                    resp.Mensaje = "No hay usuarios registrados en este momento";
+                    resp.Contenido = false;
+                    return Ok(resp);
+                }
+            }
+        }
+
+
+
         private string GenerarToken(int Consecutivo, int IdRol)
         {
             string SecretKey = iConfiguration.GetSection("Llaves:SecretKey").Value!;
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, Consecutivo.ToString()));
-            claims.Add(new Claim(ClaimTypes.Role, IdRol.ToString()));
+            claims.Add(new Claim("IdRol", IdRol.ToString()));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
@@ -117,6 +153,14 @@ namespace JN_API.Controllers
                 signingCredentials: cred);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private bool EsAdministrador()
+        {
+            var userrol = User.Claims.Select(Claim => new { Claim.Type, Claim.Value })
+                .FirstOrDefault(x => x.Type == "IdRol")!.Value;
+
+            return (userrol == "1" ? true : false);
         }
 
     }

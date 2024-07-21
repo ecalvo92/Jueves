@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </form>
-            
+
             <ul class="navbar-nav ml-auto">
 
                 <div class="form-inline ml-3">
@@ -62,7 +62,7 @@
         </nav>
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="../../index3.html" class="brand-link">
+            <a href="@Url.Action("Home","Home")" class="brand-link">
                 <img src="~/page/img/AdminLTELogo.png"
                      alt="AdminLTE Logo"
                      class="brand-image img-circle elevation-3"
@@ -73,55 +73,48 @@
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Mantenimientos
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="@Url.Action("ConsultarUsuarios","Home")" class="nav-link">
-                                        <i class="fa fa-users nav-icon"></i>
-                                        <p>Usuarios</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../../index2.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v2</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../../index3.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v3</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+
+                        @if (Context.Session.GetString("ROL")!.ToString() == "1")
+                        {
+
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Mantenimientos
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("ConsultarUsuarios","Home")" class="nav-link">
+                                            <i class="fa fa-users nav-icon"></i>
+                                            <p>Usuarios</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../../index2.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Dashboard v2</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../../index3.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Dashboard v3</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        }
+
                     </ul>
                 </nav>
             </div>
         </aside>
 
         <div class="content-wrapper">
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Blank Page</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <section class="content">
                 @RenderBody()

@@ -9,5 +9,7 @@ namespace JN_WEB.Models
         Respuesta IniciarSesion(Usuario ent);
 
         Respuesta ConsultarUsuarios();
+
+        Respuesta ConsultarUsuario(int Consecutivo);
     }
 }

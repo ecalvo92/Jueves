@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="card-body register-card-body">
+    <h4 class="">Datos del usuario</h4>
+    <hr><br />
+
 <table id="tabla-Usuarios" class="table table-hover">
     <thead>
         <tr>
@@ -13,6 +17,7 @@
             <th>Correo</th>
             <th>Rol</th>
             <th>Estado</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -24,10 +29,17 @@
                 <td>@item.Correo</td>
                 <td>@item.Descripcion</td>
                 <td>@item.Estado</td>
+                <td>
+                    <a href="@Url.Action("ActualizarUsuario","Home", new { q = item.Consecutivo })">
+                        <i class="fa fa-user"></i>
+                    </a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+</div>
 
 <script src="~/page/jquery/jquery.min.js"></script>
 <script src="~/js/ConsultaUsuarios.js"></script>
