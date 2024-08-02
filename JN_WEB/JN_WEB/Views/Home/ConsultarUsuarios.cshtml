@@ -9,35 +9,66 @@
     <h4 class="">Datos del usuario</h4>
     <hr><br />
 
-<table id="tabla-Usuarios" class="table table-hover">
-    <thead>
-        <tr>
-            <th>Identificación</th>
-            <th>Nombre</th>
-            <th>Correo</th>
-            <th>Rol</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table id="tabla-Usuarios" class="table table-hover">
+        <thead>
             <tr>
-                <td>@item.Identificacion</td>
-                <td>@item.Nombre</td>                
-                <td>@item.Correo</td>
-                <td>@item.Descripcion</td>
-                <td>@item.Estado</td>
-                <td>
-                    <a href="@Url.Action("ActualizarUsuario","Home", new { q = item.Consecutivo })">
-                        <i class="fa fa-user"></i>
-                    </a>
-                </td>
+                <th>Identificación</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Identificacion</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Correo</td>
+                    <td>@item.Descripcion</td>
+                    <td>@item.Estado</td>
+                    <td>
+
+                        <button type="button" class="btn btn-primary Modales" data-toggle="modal" data-target="#ModalUsuarios"
+                        data-id="@item.Consecutivo" data-name="@item.Nombre">
+                            <i class="fa fa-pen"></i>
+                        </button>
+
+                        <a class="btn btn-primary" href="@Url.Action("ActualizarUsuario", "Home", new { q = item.Consecutivo })">
+                            <i class="fa fa-user"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="ModalUsuarios" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirmar Acciones</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                @using (Html.BeginForm("CambiarEstadoUsuario", "Home"))
+                {
+                    <div class="modal-body">
+                        @Html.Hidden("Consecutivo", "")
+                        ¿Desea cambiar el estado del usuario <label id="Nombre"><label>?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary"> <i class="fa fa-check"></i></button>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
 
 </div>
 

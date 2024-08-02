@@ -24,6 +24,16 @@ namespace JN_WEB.Controllers
             if (resp.Codigo == 1)
             {
                 var datos = JsonSerializer.Deserialize<Usuario>((JsonElement)resp.Contenido!);
+
+                if (datos!.EsTemporal)
+                {
+                    if (datos!.VigenciaTemporal <= DateTime.Now)
+                    {
+                        ViewBag.msj = "Su contraseña temporal ha caducado.";
+                        return View();
+                    }
+                }
+
                 HttpContext.Session.SetString("TOKEN", datos!.Token!);
                 HttpContext.Session.SetString("NOMBRE", datos!.Nombre!);
                 HttpContext.Session.SetString("ROL", datos!.IdRol.ToString());
@@ -116,10 +126,16 @@ namespace JN_WEB.Controllers
         [HttpPost]
         public IActionResult ActualizarUsuario(Usuario ent)
         {
-            //HACE FALTA LA PARTE DE ACTUALIZAR UN USUARIO
+            var resp = iUsuarioModel.ActualizarUsuario(ent);
+
+            if (resp.Codigo == 1)
+                return RedirectToAction("ConsultarUsuarios", "Home");
+
+            ViewBag.msj = resp.Mensaje;
             return View();
         }
 
+        
 
         [HttpGet]
         public IActionResult RecuperarAcceso()
@@ -139,6 +155,18 @@ namespace JN_WEB.Controllers
             return View();
         }
 
+
+        [HttpPost]
+        public IActionResult CambiarEstadoUsuario(Usuario ent)
+        {
+            var resp = iUsuarioModel.CambiarEstadoUsuario(ent);
+
+            if (resp.Codigo == 1)
+                return RedirectToAction("ConsultarUsuarios", "Home");
+
+            ViewBag.msj = resp.Mensaje;
+            return View();
+        }
 
     }
 }

@@ -25,51 +25,82 @@ CREATE TABLE [dbo].[tUsuario](
 	[Contrasenna] [varchar](100) NOT NULL,
 	[IdRol] [tinyint] NOT NULL,
 	[Estado] [bit] NOT NULL,
+	[EsTemporal] [bit] NULL,
+	[VigenciaTemporal] [datetime] NULL,
  CONSTRAINT [PK_tUsuario] PRIMARY KEY CLUSTERED 
 (
 	[Consecutivo] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-
-SET IDENTITY_INSERT [dbo].[tRol] ON 
-GO
-INSERT [dbo].[tRol] ([IdRol], [Descripcion]) VALUES (1, N'Administrador')
-GO
-INSERT [dbo].[tRol] ([IdRol], [Descripcion]) VALUES (2, N'Usuario')
-GO
-INSERT [dbo].[tRol] ([IdRol], [Descripcion]) VALUES (3, N'Prueba')
-GO
-SET IDENTITY_INSERT [dbo].[tRol] OFF
-GO
-
-SET IDENTITY_INSERT [dbo].[tUsuario] ON 
-GO
-INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (1, N'304590415', N'Eduardo Calvo Castillo', N'ecalvo90415@ufide.ac.cr', N'cSKGG1tdQNeyv7wJWXXCiw==', 2, 1)
-GO
-INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (2, N'305070199', N'Tifanny Camacho Monge', N'tcamacho70199@ufide.ac.cr', N'cSKGG1tdQNeyv7wJWXXCiw==', 1, 1)
-GO
-INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado]) VALUES (1002, N'115390597', N'Brayam Perez', N'bperez90597@ufide.ac.cr', N'ZC9bbl+1mRONkmaW/maXiA==', 1, 1)
-GO
-SET IDENTITY_INSERT [dbo].[tUsuario] OFF
-GO
-
-ALTER TABLE [dbo].[tUsuario] ADD  CONSTRAINT [UK_Cedula] UNIQUE NONCLUSTERED 
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UK_Cedula] UNIQUE NONCLUSTERED 
 (
 	[Identificacion] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-GO
-
-ALTER TABLE [dbo].[tUsuario] ADD  CONSTRAINT [UK_Correo] UNIQUE NONCLUSTERED 
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UK_Correo] UNIQUE NONCLUSTERED 
 (
 	[Correo] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 
 ALTER TABLE [dbo].[tUsuario]  WITH CHECK ADD  CONSTRAINT [FK_tUsuario_tRol] FOREIGN KEY([IdRol])
 REFERENCES [dbo].[tRol] ([IdRol])
 GO
 ALTER TABLE [dbo].[tUsuario] CHECK CONSTRAINT [FK_tUsuario_tRol]
+GO
+
+CREATE PROCEDURE [dbo].[ActualizarContrasenna]
+	@Consecutivo INT, 
+	@Contrasenna VARCHAR(100),
+	@EsTemporal	 BIT, 
+	@VigenciaTemporal DATETIME
+AS
+BEGIN
+
+	UPDATE tUsuario
+	   SET Contrasenna = @Contrasenna,
+		   EsTemporal = @EsTemporal,
+		   VigenciaTemporal = @VigenciaTemporal
+	 WHERE Consecutivo = @Consecutivo
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[ActualizarUsuario]
+	@Consecutivo	INT,
+	@Identificacion VARCHAR(50),
+	@Nombre			VARCHAR(100),
+	@Correo			VARCHAR(100),
+	@IdRol			TINYINT
+AS
+BEGIN
+
+	IF NOT EXISTS(SELECT 1 FROM dbo.tUsuario WHERE	(Correo = @Correo 
+												OR	Identificacion = @Identificacion)
+												AND Consecutivo != @Consecutivo)
+	BEGIN
+
+		UPDATE tUsuario
+		   SET Identificacion = @Identificacion,
+			   Nombre = @Nombre,
+			   Correo = @Correo,
+			   IdRol = @IdRol
+		 WHERE Consecutivo = @Consecutivo
+
+	END
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[CambiarEstadoUsuario]
+	@Consecutivo INT
+AS
+BEGIN
+
+	UPDATE tUsuario
+	   SET Estado = CASE WHEN Estado = 1 THEN 0 ELSE 1 END
+	 WHERE Consecutivo = @Consecutivo
+
+END
 GO
 
 CREATE PROCEDURE [dbo].[ConsultarRoles]
@@ -97,6 +128,20 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[ConsultarUsuarioIdentificacion]
+	@Identificacion INT
+AS
+BEGIN
+
+	SELECT	Consecutivo,Identificacion,Nombre,Correo,U.IdRol,
+	CASE WHEN Estado = 1 THEN 'Activo' ELSE 'Inactivo' END 'Estado',R.Descripcion
+	FROM	dbo.tUsuario U
+	INNER JOIN dbo.tRol  R ON U.IdRol = R.IdRol
+	WHERE Identificacion = @Identificacion
+
+END
+GO
+
 CREATE PROCEDURE [dbo].[ConsultarUsuarios]
 	
 AS
@@ -116,7 +161,8 @@ CREATE PROCEDURE [dbo].[IniciarSesion]
 AS
 BEGIN
 
-	SELECT	Consecutivo,Identificacion,Nombre,Correo,U.IdRol,Estado,R.Descripcion
+	SELECT	Consecutivo,Identificacion,Nombre,Correo,U.IdRol,Estado,R.Descripcion,
+			EsTemporal, VigenciaTemporal
 	FROM	dbo.tUsuario U
 	INNER JOIN dbo.tRol  R ON U.IdRol = R.IdRol
 	WHERE	Correo = @Correo
@@ -134,14 +180,15 @@ CREATE PROCEDURE [dbo].[RegistrarUsuario]
 AS
 BEGIN
 
-	DECLARE @Rol	TINYINT = 2,
-			@Estado	BIT		= 1
+	DECLARE @Rol		TINYINT = 2,
+			@Estado		BIT		= 1,
+			@Temporal	BIT		= 0
 
 	IF NOT EXISTS(SELECT 1 FROM dbo.tUsuario WHERE Correo = @Correo OR Identificacion = @Identificacion)
 	BEGIN
 
-		INSERT INTO dbo.tUsuario(Identificacion,Nombre,Correo,Contrasenna,IdRol,Estado)
-		VALUES (@Identificacion,@Nombre,@Correo,@Contrasenna,@Rol,@Estado)
+		INSERT INTO dbo.tUsuario(Identificacion,Nombre,Correo,Contrasenna,IdRol,Estado,EsTemporal,VigenciaTemporal)
+		VALUES (@Identificacion,@Nombre,@Correo,@Contrasenna,@Rol,@Estado,@Temporal,GETDATE())
 
 	END
 

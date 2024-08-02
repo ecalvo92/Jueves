@@ -11,5 +11,7 @@
         public string? Descripcion { get; set; }
         public string? Estado { get; set; }
         public int IdRol { get; set; }
+        public bool EsTemporal { get; set; }
+        public DateTime VigenciaTemporal { get; set; }
     }
 }

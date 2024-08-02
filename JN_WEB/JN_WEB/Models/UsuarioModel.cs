@@ -70,6 +70,42 @@ namespace JN_WEB.Models
             }
         }
 
+        public Respuesta CambiarEstadoUsuario(Usuario ent)
+        {
+            using (httpClient)
+            {
+                string url = iConfiguration.GetSection("Llaves:UrlApi").Value + "Usuario/CambiarEstadoUsuario";
+                string token = iContextAccesor.HttpContext!.Session.GetString("TOKEN")!.ToString();
+
+                JsonContent body = JsonContent.Create(ent);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var resp = httpClient.PutAsync(url, body).Result;
+
+                if (resp.IsSuccessStatusCode)
+                    return resp.Content.ReadFromJsonAsync<Respuesta>().Result!;
+                else
+                    return new Respuesta();
+            }
+        }
+
+        public Respuesta ActualizarUsuario(Usuario ent)
+        {
+            using (httpClient)
+            {
+                string url = iConfiguration.GetSection("Llaves:UrlApi").Value + "Usuario/ActualizarUsuario";
+                string token = iContextAccesor.HttpContext!.Session.GetString("TOKEN")!.ToString();
+
+                JsonContent body = JsonContent.Create(ent);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var resp = httpClient.PutAsync(url, body).Result;
+
+                if (resp.IsSuccessStatusCode)
+                    return resp.Content.ReadFromJsonAsync<Respuesta>().Result!;
+                else
+                    return new Respuesta();
+            }
+        }
+
         public Respuesta RecuperarAcceso(string Identificacion)
         {
             using (httpClient)

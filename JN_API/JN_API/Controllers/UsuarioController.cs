@@ -136,6 +136,67 @@ namespace JN_API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPut]
+        [Route("CambiarEstadoUsuario")]
+        public async Task<IActionResult> CambiarEstadoUsuario(Usuario ent)
+        {
+            if (!iComunesModel.EsAdministrador(User))
+                return StatusCode(403);
+
+            Respuesta resp = new Respuesta();
+
+            using (var context = new SqlConnection(iConfiguration.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var result = await context.ExecuteAsync("CambiarEstadoUsuario", new { ent.Consecutivo }, commandType: CommandType.StoredProcedure);
+
+                if (result > 0)
+                {
+                    resp.Codigo = 1;
+                    resp.Mensaje = "OK";
+                    resp.Contenido = true;
+                    return Ok(resp);
+                }
+                else
+                {
+                    resp.Codigo = 0;
+                    resp.Mensaje = "El estado del usuario no se pudo actualizar";
+                    resp.Contenido = false;
+                    return Ok(resp);
+                }
+            }
+        }
+
+        [Authorize]
+        [HttpPut]
+        [Route("ActualizarUsuario")]
+        public async Task<IActionResult> ActualizarUsuario(Usuario ent)
+        {
+            if (!iComunesModel.EsAdministrador(User))
+                return StatusCode(403);
+
+            Respuesta resp = new Respuesta();
+
+            using (var context = new SqlConnection(iConfiguration.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var result = await context.ExecuteAsync("ActualizarUsuario", new { ent.Consecutivo, ent.Identificacion, ent.Nombre, ent.Correo, ent.IdRol }, commandType: CommandType.StoredProcedure);
+
+                if (result > 0)
+                {
+                    resp.Codigo = 1;
+                    resp.Mensaje = "OK";
+                    resp.Contenido = true;
+                    return Ok(resp);
+                }
+                else
+                {
+                    resp.Codigo = 0;
+                    resp.Mensaje = "La información del usuario no se pudo actualizar";
+                    resp.Contenido = false;
+                    return Ok(resp);
+                }
+            }
+        }
 
         [HttpGet]
         [Route("RecuperarAcceso")]

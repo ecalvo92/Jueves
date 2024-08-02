@@ -23,6 +23,8 @@
 
             @using (Html.BeginForm("ActualizarUsuario", "Home"))
             {
+                @Html.HiddenFor(m => m.Consecutivo)
+
                 @Html.Label("Identificación")
                 <div class="input-group mb-3">
                     @Html.TextBoxFor(m => m.Identificacion, new { @type = "text", @class = "form-control", @placeholder = "Identificación" })

@@ -12,6 +12,10 @@ namespace JN_WEB.Models
 
         Respuesta ConsultarUsuario(int Consecutivo);
 
+        Respuesta ActualizarUsuario(Usuario ent);
+
         Respuesta RecuperarAcceso(string Identificacion);
+
+        Respuesta CambiarEstadoUsuario(Usuario ent);
     }
 }
