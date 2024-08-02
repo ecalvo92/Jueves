@@ -11,5 +11,7 @@ namespace JN_WEB.Models
         Respuesta ConsultarUsuarios();
 
         Respuesta ConsultarUsuario(int Consecutivo);
+
+        Respuesta RecuperarAcceso(string Identificacion);
     }
 }

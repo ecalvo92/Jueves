@@ -70,5 +70,20 @@ namespace JN_WEB.Models
             }
         }
 
+        public Respuesta RecuperarAcceso(string Identificacion)
+        {
+            using (httpClient)
+            {
+                string url = iConfiguration.GetSection("Llaves:UrlApi").Value + "Usuario/RecuperarAcceso?Identificacion=" + Identificacion;
+
+                var resp = httpClient.GetAsync(url).Result;
+
+                if (resp.IsSuccessStatusCode)
+                    return resp.Content.ReadFromJsonAsync<Respuesta>().Result!;
+                else
+                    return new Respuesta();
+            }
+        }
+
     }
 }

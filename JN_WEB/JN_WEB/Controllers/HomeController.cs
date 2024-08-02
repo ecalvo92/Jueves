@@ -116,8 +116,29 @@ namespace JN_WEB.Controllers
         [HttpPost]
         public IActionResult ActualizarUsuario(Usuario ent)
         {
+            //HACE FALTA LA PARTE DE ACTUALIZAR UN USUARIO
             return View();
         }
+
+
+        [HttpGet]
+        public IActionResult RecuperarAcceso()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RecuperarAcceso(Usuario ent)
+        {
+            var resp = iUsuarioModel.RecuperarAcceso(ent.Identificacion!);
+
+            if (resp.Codigo == 1)
+                return RedirectToAction("Index", "Home");
+
+            ViewBag.msj = resp.Mensaje;
+            return View();
+        }
+
 
     }
 }

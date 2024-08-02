@@ -1,3 +1,4 @@
+using JN_API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -10,6 +11,7 @@ string SecretKey = builder.Configuration["Llaves:SecretKey"]!.ToString();
 builder.Services.AddControllers().AddJsonOptions(x => { x.JsonSerializerOptions.PropertyNamingPolicy = null; });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IComunesModel, ComunesModel>();
 
 builder.Services.AddSwaggerGen(options =>
 {

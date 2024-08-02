@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using JN_API.Entities;
+using JN_API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +13,16 @@ namespace JN_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RolController(IConfiguration iConfiguration) : ControllerBase
+    public class RolController(IConfiguration iConfiguration, IComunesModel iComunesModel) : ControllerBase
     {
         [Authorize]
         [HttpGet]
         [Route("ConsultarRoles")]
         public async Task<IActionResult> ConsultarRoles()
         {
+            if (!iComunesModel.EsAdministrador(User))
+                return StatusCode(403);
+
             Respuesta resp = new Respuesta();
 
             using (var context = new SqlConnection(iConfiguration.GetSection("ConnectionStrings:DefaultConnection").Value))
