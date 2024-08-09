@@ -68,6 +68,26 @@ namespace JN_WEB.Controllers
 
 
 
+        [HttpGet]
+        public IActionResult RecuperarAcceso()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RecuperarAcceso(Usuario ent)
+        {
+            var resp = iUsuarioModel.RecuperarAcceso(ent.Identificacion!);
+
+            if (resp.Codigo == 1)
+                return RedirectToAction("Index", "Home");
+
+            ViewBag.msj = resp.Mensaje;
+            return View();
+        }
+
+
+
         [FiltroSesiones]
         [HttpGet]
         public IActionResult Home()
@@ -135,27 +155,9 @@ namespace JN_WEB.Controllers
             return View();
         }
 
-        
-
-        [HttpGet]
-        public IActionResult RecuperarAcceso()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult RecuperarAcceso(Usuario ent)
-        {
-            var resp = iUsuarioModel.RecuperarAcceso(ent.Identificacion!);
-
-            if (resp.Codigo == 1)
-                return RedirectToAction("Index", "Home");
-
-            ViewBag.msj = resp.Mensaje;
-            return View();
-        }
 
 
+        [FiltroSesiones]
         [HttpPost]
         public IActionResult CambiarEstadoUsuario(Usuario ent)
         {

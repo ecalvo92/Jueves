@@ -1,0 +1,58 @@
+﻿@model JN_WEB.Entities.Usuario
+
+@{
+    ViewData["Title"] = "Principal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body register-card-body">
+    <h4 class="">Cambio de contraseña</h4>
+    <hr><br />
+
+    @if (ViewBag.msj != null)
+    {
+        <div class="alert alert-secondary" style="text-align:center" role="alert">
+            @ViewBag.msj
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="col-6">
+
+            @using (Html.BeginForm("CambiarContrasenna", "Perfil"))
+            {
+                @Html.Label("Contraseña")
+                <div class="input-group mb-3">
+                    @Html.TextBoxFor(m => m.Contrasenna, new { @type = "password", @class = "form-control", @placeholder = "Contraseña" })
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+
+                @Html.Label("Confirmar Contraseña")
+                <div class="input-group mb-3">
+                    @Html.TextBoxFor(m => m.ContrasennaConfirmar, new { @type = "password", @class = "form-control", @placeholder = "Confirmar Contraseña" })
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-8">
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">Procesar</button>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

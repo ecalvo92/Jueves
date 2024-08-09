@@ -1,0 +1,71 @@
+﻿@model JN_WEB.Entities.Usuario
+
+@{
+    ViewData["Title"] = "Principal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-body register-card-body">
+    <h4 class="">Datos del usuario</h4>
+    <hr><br />
+
+    @if (ViewBag.msj != null)
+    {
+        <div class="alert alert-secondary" style="text-align:center" role="alert">
+            @ViewBag.msj
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="col-6">
+
+            @using (Html.BeginForm("ActualizarPerfilUsuario", "Perfil"))
+            {
+                @Html.HiddenFor(m => m.Consecutivo)
+                @Html.HiddenFor(m => m.IdRol)
+
+                @Html.Label("Identificación")
+                <div class="input-group mb-3">
+                    @Html.TextBoxFor(m => m.Identificacion, new { @type = "text", @class = "form-control", @placeholder = "Identificación" })
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+
+                @Html.Label("Nombre")
+                <div class="input-group mb-3">
+                    @Html.TextBoxFor(m => m.Nombre, new { @type = "text", @class = "form-control", @placeholder = "Nombre" })
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+
+                @Html.Label("Correo Electrónico")
+                <div class="input-group mb-3">
+                    @Html.TextBoxFor(m => m.Correo, new { @type = "email", @class = "form-control", @placeholder = "Correo Electrónico" })
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-8">
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">Procesar</button>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>
