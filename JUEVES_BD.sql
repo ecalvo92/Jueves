@@ -7,6 +7,43 @@ GO
 USE [JUEVES_BD]
 GO
 
+CREATE TABLE [dbo].[tCategoria](
+	[IdCategoria] [int] IDENTITY(1,1) NOT NULL,
+	[NombreCategoria] [varchar](250) NOT NULL,
+ CONSTRAINT [PK_tCategoria] PRIMARY KEY CLUSTERED 
+(
+	[IdCategoria] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[tProducto](
+	[IdProducto] [int] IDENTITY(1,1) NOT NULL,
+	[Nombre] [varchar](50) NOT NULL,
+	[Descripcion] [varchar](500) NOT NULL,
+	[PrecioUnitario] [decimal](18, 2) NOT NULL,
+	[IdCategoria] [int] NOT NULL,
+	[IdProveedor] [int] NOT NULL,
+	[Inventario] [int] NOT NULL,
+	[Imagen] [varchar](500) NOT NULL,
+	[Estado] [bit] NOT NULL,
+ CONSTRAINT [PK_tProducto] PRIMARY KEY CLUSTERED 
+(
+	[IdProducto] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[tProveedor](
+	[IdProveedor] [int] IDENTITY(1,1) NOT NULL,
+	[NombreProveedor] [varchar](250) NULL,
+ CONSTRAINT [PK_tProveedor] PRIMARY KEY CLUSTERED 
+(
+	[IdProveedor] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 CREATE TABLE [dbo].[tRol](
 	[IdRol] [tinyint] IDENTITY(1,1) NOT NULL,
 	[Descripcion] [varchar](50) NOT NULL,
@@ -30,16 +67,79 @@ CREATE TABLE [dbo].[tUsuario](
  CONSTRAINT [PK_tUsuario] PRIMARY KEY CLUSTERED 
 (
 	[Consecutivo] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
- CONSTRAINT [UK_Cedula] UNIQUE NONCLUSTERED 
-(
-	[Identificacion] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
- CONSTRAINT [UK_Correo] UNIQUE NONCLUSTERED 
-(
-	[Correo] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
+GO
+
+SET IDENTITY_INSERT [dbo].[tCategoria] ON 
+GO
+INSERT [dbo].[tCategoria] ([IdCategoria], [NombreCategoria]) VALUES (1, N'Tecnología')
+GO
+INSERT [dbo].[tCategoria] ([IdCategoria], [NombreCategoria]) VALUES (2, N'Ropa')
+GO
+INSERT [dbo].[tCategoria] ([IdCategoria], [NombreCategoria]) VALUES (3, N'Alimentos')
+GO
+SET IDENTITY_INSERT [dbo].[tCategoria] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[tProducto] ON 
+GO
+INSERT [dbo].[tProducto] ([IdProducto], [Nombre], [Descripcion], [PrecioUnitario], [IdCategoria], [IdProveedor], [Inventario], [Imagen], [Estado]) VALUES (3, N'Play station 5', N'PlayStation 5 es la quinta consola de videojuegos de sobremesa desarrollada por la empresa Sony Interactive Entertainment, a la vez que es la tercera consola de Sony en ser diseñada por Mark Cerny.', CAST(315000.00 AS Decimal(18, 2)), 1, 1, 10, N'https://th.bing.com/th/id/OIP.TUq7Z7NWXVVwiz0iNLKd7QHaHa?rs=1&pid=ImgDetMain', 1)
+GO
+INSERT [dbo].[tProducto] ([IdProducto], [Nombre], [Descripcion], [PrecioUnitario], [IdCategoria], [IdProveedor], [Inventario], [Imagen], [Estado]) VALUES (5, N'Camiseta Real Madrid', N'
+Kylian Mbappé Kits
+Introducing the official jersey and kit of your favorite player, Kylian Mbappé! It features Mbappe''s official number and name on the back, as well as Champions League and Spanish League badges.', CAST(70000.00 AS Decimal(18, 2)), 2, 2, 15, N'https://w7.pngwing.com/pngs/638/671/png-transparent-white-adidas-polo-shirt-real-madrid-c-f-uefa-champions-league-jersey-shirt-kit-jersey-tshirt-white-logo.png', 1)
+GO
+SET IDENTITY_INSERT [dbo].[tProducto] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[tProveedor] ON 
+GO
+INSERT [dbo].[tProveedor] ([IdProveedor], [NombreProveedor]) VALUES (1, N'Amazon')
+GO
+INSERT [dbo].[tProveedor] ([IdProveedor], [NombreProveedor]) VALUES (2, N'Shein')
+GO
+INSERT [dbo].[tProveedor] ([IdProveedor], [NombreProveedor]) VALUES (3, N'Walmart')
+GO
+SET IDENTITY_INSERT [dbo].[tProveedor] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[tRol] ON 
+GO
+INSERT [dbo].[tRol] ([IdRol], [Descripcion]) VALUES (1, N'Administrador')
+GO
+INSERT [dbo].[tRol] ([IdRol], [Descripcion]) VALUES (2, N'Usuario')
+GO
+SET IDENTITY_INSERT [dbo].[tRol] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[tUsuario] ON 
+GO
+INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado], [EsTemporal], [VigenciaTemporal]) VALUES (1, N'304590415', N'Eduardo José Calvo Castillo', N'ecalvo90415@ufide.ac.cr', N'cSKGG1tdQNeyv7wJWXXCiw==', 2, 1, NULL, NULL)
+GO
+INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado], [EsTemporal], [VigenciaTemporal]) VALUES (2, N'305070199', N'Tifanny Andrea Camacho Monge', N'tcamacho70199@ufide.ac.cr', N'5WTxeR6FTuUE6YMYTcYTMA==', 1, 1, 0, CAST(N'2024-08-08T19:34:30.827' AS DateTime))
+GO
+INSERT [dbo].[tUsuario] ([Consecutivo], [Identificacion], [Nombre], [Correo], [Contrasenna], [IdRol], [Estado], [EsTemporal], [VigenciaTemporal]) VALUES (1002, N'115390597', N'Brayam Perez Reyes', N'bperez90597@ufide.ac.cr', N'ZC9bbl+1mRONkmaW/maXiA==', 2, 1, NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[tUsuario] OFF
+GO
+
+ALTER TABLE [dbo].[tUsuario] ADD  CONSTRAINT [UK_Cedula] UNIQUE NONCLUSTERED 
+(
+	[Identificacion] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tUsuario] ADD  CONSTRAINT [UK_Correo] UNIQUE NONCLUSTERED 
+(
+	[Correo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[tProducto]  WITH CHECK ADD  CONSTRAINT [FK_tProducto_tProveedor] FOREIGN KEY([IdProveedor])
+REFERENCES [dbo].[tProveedor] ([IdProveedor])
+GO
+ALTER TABLE [dbo].[tProducto] CHECK CONSTRAINT [FK_tProducto_tProveedor]
 GO
 
 ALTER TABLE [dbo].[tUsuario]  WITH CHECK ADD  CONSTRAINT [FK_tUsuario_tRol] FOREIGN KEY([IdRol])
@@ -99,6 +199,29 @@ BEGIN
 	UPDATE tUsuario
 	   SET Estado = CASE WHEN Estado = 1 THEN 0 ELSE 1 END
 	 WHERE Consecutivo = @Consecutivo
+
+END
+GO
+
+CREATE PROCEDURE [dbo].[ConsultarProductos]
+
+AS
+BEGIN
+
+	SELECT	IdProducto,
+			Nombre,
+			Descripcion,
+			PrecioUnitario,
+			P.IdCategoria,
+			C.NombreCategoria,
+			P.IdProveedor,
+			Pr.NombreProveedor,
+			Inventario,
+			Imagen,
+			Estado
+	  FROM dbo.tProducto P
+	  INNER JOIN dbo.tCategoria C ON P.IdCategoria = C.IdCategoria
+	  INNER JOIN dbo.tProveedor Pr ON P.IdProveedor = Pr.IdProveedor
 
 END
 GO

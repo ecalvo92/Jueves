@@ -11,6 +11,7 @@ builder.Services.AddScoped<IUsuarioModel, UsuarioModel>();
 builder.Services.AddScoped<IComunModel, ComunModel>();
 builder.Services.AddScoped<IRolModel, RolModel>();
 builder.Services.AddScoped<IPerfilModel, PerfilModel>();
+builder.Services.AddScoped<IProductoModel, ProductoModel>();
 
 var app = builder.Build();
 
